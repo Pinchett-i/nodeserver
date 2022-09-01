@@ -13,13 +13,10 @@ router.get('/', function(request, response, next) {
 
 router.get('/home', (request, response, next) => {
   if (request.session.loggedin) {
-		// Output username
-		response.send('Welcome back, ' + request.session.email + '!');
-	} else {
-		// Not logged in
-		response.send('Please login to view this page!');
+		response.render('pages/home', {title: 'Home', layout: './layouts/application', email: request.session.email})
+		return 
 	}
-	response.end();
+	response.redirect('/');
 })
 
 module.exports = router;

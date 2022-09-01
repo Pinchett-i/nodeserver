@@ -34,20 +34,26 @@ router.post('/auth', (request, response) => {
       }
 
       if (results.rowCount == 0) {
-        response.send('Invalid Email');
+        request.flash("error","Invalid Email")
+        response.redirect('/')
         return
       }
 
       if (results.rows[0].password != password) {
-        response.send('Incorrect Password');
+        request.flash("error","Incorrect Password")
+        response.redirect('/')
         return
       }
 
-      request.session.loggedin = true;
-      request.session.email = email;
-      response.redirect('/home');
+      log_in(request, response, email)
     })
   }
 });
 
+function log_in(request, response, email) {
+  request.flash("success","Successfully Logged In")
+  request.session.loggedin = true;
+  request.session.email = email;
+  response.redirect('/home')
+}
 module.exports = router;
