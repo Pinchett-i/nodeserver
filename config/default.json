@@ -1,0 +1,9 @@
+{
+  "db": {
+    "user": "nodeserver",
+    "password": "nodeserver",
+    "host": "localhost",
+    "port": 5432,
+    "database": "nodeserver_development"
+  }
+}
