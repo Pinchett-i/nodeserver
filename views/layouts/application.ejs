@@ -1,27 +1,28 @@
 <!DOCTYPE html>
 <div lang="en">
 
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  
-  <title>
-    <% if (typeof(title) === 'undefined') { %>
-      NodeServer
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>
+      <% if (typeof(title) === 'undefined') { %>
+        NodeServer
       <% } else { %>
         <%= title %>
-    <% } %>
-  </title>
-  <script src="https://kit.fontawesome.com/1a8a9676bd.js" crossorigin="anonymous"></script>
-  <link rel="stylesheet" href="/stylesheets/style.css" />
-</head>
+      <% } %>
+    </title>
+    <script src="https://kit.fontawesome.com/1a8a9676bd.js" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="/stylesheets/style.css" />
+  </head>
 
-<body>
-  <div class="wrapper">
-    <%- include('../partials/header.ejs') %>
-    <main><%- body %></main>
-    <%- include('../partials/footer.ejs') %>
-  </div>
-</body>
+  <body>
+    <div class="wrapper">
+      <%- include('../partials/_header.ejs') %>
+      <%- include('../partials/_flash.ejs') %>
+      <main><%- body %></main>
+      <%- include('../partials/_footer.ejs') %>
+    </div>
+  </body>
 
 </div>
