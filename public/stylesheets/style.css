@@ -18,6 +18,7 @@ body {
   background-color: #ffffff;
   box-shadow: 0 0 9px 0 rgba(0, 0, 0, 0.3);
   margin: 100px auto;
+  padding: 5rem;
 }
 .login h1 {
   text-align: center;
@@ -41,7 +42,7 @@ body {
   background-color: #3274d6;
   color: #ffffff;
 }
-.login form input[type="password"], .login form input[type="email"] {
+.login form input {
   width: 310px;
   height: 50px;
   border: 1px solid #dee0e4;

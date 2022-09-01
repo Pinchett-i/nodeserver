@@ -4,7 +4,6 @@ var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 var expressLayouts = require('express-ejs-layouts')
-var bodyParser = require("body-parser");
 var session = require('express-session');
 var flash = require('./middlewares/flash')
 var indexRouter = require('./routes/index');
@@ -29,7 +28,7 @@ app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
-app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.static(path.join(__dirname, 'public')))
 app.use(session({
 	secret: 'secret',
 	resave: true,

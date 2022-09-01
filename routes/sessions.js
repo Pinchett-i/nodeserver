@@ -5,11 +5,8 @@ const {
 } = require("pg");
 const pool = new Pool()
 
-router.get('/', function (request, res, next) {
-  res.render('sessions/new', {
-    title: 'Login',
-    layout: './layouts/application'
-  });
+router.get('/', function (request, response, next) {
+  response.render('sessions/new', { title: 'Login', layout: './layouts/application' });
 });
 
 router.get('/new', function (request, res, next) {

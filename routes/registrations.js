@@ -5,11 +5,8 @@ const pool = new Pool()
 var router = express.Router();
 
 
-router.get('/new', function (req, res, next) {
-  res.render('registrations/new', {
-    title: 'Sign up',
-    layout: './layouts/application'
-  });
+router.get('/new', function (request, response, next) {
+  response.render('registrations/new', { title: 'Sign Up', layout: './layouts/application' });
 });
 
 router.post('/', (request, response) => {
