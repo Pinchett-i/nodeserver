@@ -9,20 +9,15 @@ var flash = require('./middlewares/flash')
 var indexRouter = require('./routes/index');
 var sessionsRouter = require('./routes/sessions');
 var registrationsRouter = require('./routes/registrations');
-var db = require('./db/connection_pool')
-
-
-
-// const dotenv = require("dotenv")
-// dotenv.config()
+var { dbConnection } = require('./services/database/database_service');
 
 var app = express();
 
-// view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
 app.set('layout', './layouts/application')
 app.set('name', 'Testnodeserver')
+app.set('db',dbConnection)
 
 app.use(logger('dev'));
 app.use(express.json());
