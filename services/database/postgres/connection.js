@@ -55,7 +55,7 @@ class PostgresConnection {
 
   get_search_query_string(table, fields) {
     let fields_keys = Object.keys(fields)
-    if (fields_keys.length == 0) return
+    if (fields_keys.length == 0) { return `SELECT * FROM ${table}` }
 
     let str = `SELECT * FROM ${table} WHERE ${fields_keys[0]} = $1`
     if (fields_keys.length == 1) {
@@ -87,7 +87,7 @@ class PostgresConnection {
     if (fields_keys.length == 0) return
 
     let str = `UPDATE ${table} SET `
-    str += fields_keys.map((key, index)=>{return `${key} = $${index + 1}`}).join(', ')
+    str += fields_keys.map((key, index) => { return `${key} = $${index + 1}` }).join(', ')
 
     if (_id == null) { return str }
 
@@ -98,7 +98,7 @@ class PostgresConnection {
 
   get_delete_query_string(table, ids) {
     let str = `DELETE FROM ${table}`
-    if (ids.length == 0) return str
+    if (ids.length === 0) return str
 
     str += ` WHERE id IN (${ids.join()})`
 

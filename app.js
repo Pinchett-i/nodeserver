@@ -9,6 +9,7 @@ var flash = require('./middlewares/flash')
 var indexRouter = require('./routes/index');
 var sessionsRouter = require('./routes/sessions');
 var registrationsRouter = require('./routes/registrations');
+var companiesRouter = require('./routes/companies');
 var { dbConnection } = require('./services/database/database_service');
 
 var app = express();
@@ -38,6 +39,7 @@ app.use(flash)
 app.use('/', indexRouter);
 app.use('/sessions', sessionsRouter);
 app.use('/registrations', registrationsRouter);
+app.use('/companies', companiesRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

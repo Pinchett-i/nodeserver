@@ -1,0 +1,7 @@
+<form action="/companies/<%= typeof(company) == 'undefined' ? '' : company.id  %>" method="post"> 
+  <label for="company_name">
+    <i class="fas fa-building"></i>
+  </label>
+  <input type="text" name="company_name" placeholder="Company Name" id="name" required>
+  <input type="submit" value="<%= typeof(company) == 'undefined' ? 'Create Company' : 'Update Company'  %>">
+</form>
