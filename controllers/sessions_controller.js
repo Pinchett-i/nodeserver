@@ -1,4 +1,5 @@
-var ApplicationController = require('./application_controller')
+const ApplicationController = require('./application_controller')
+const bcrypt = require("bcrypt")
 
 class SessionsController extends ApplicationController {
 
@@ -29,13 +30,15 @@ class SessionsController extends ApplicationController {
       { "email": email }
     )
 
-    if (results.rowCount == 0) {
+    if (results.length === 0) {
       request.flash("error", "Invalid Email")
       response.redirect('/')
       return
     }
 
-    if (results.rows[0].password != password) {
+    const password_match = await bcrypt.compare(password, results[0].password)
+
+    if (password_match === false) {
       request.flash("error", "Incorrect Password")
       response.redirect('/')
       return
