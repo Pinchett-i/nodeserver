@@ -6,10 +6,8 @@ var logger = require('morgan');
 var expressLayouts = require('express-ejs-layouts')
 var session = require('express-session');
 var flash = require('./middlewares/flash')
-var indexRouter = require('./routes/index');
-var sessionsRouter = require('./routes/sessions');
-var registrationsRouter = require('./routes/registrations');
-var companiesRouter = require('./routes/companies');
+const mountRoutes = require('./config/routes')
+
 var { dbConnection } = require('./services/database/database_service');
 
 var app = express();
@@ -35,11 +33,8 @@ app.use(express.urlencoded({ extended: true }));
 app.use(expressLayouts)
 app.use(flash)
 
+mountRoutes(app)
 
-app.use('/', indexRouter);
-app.use('/sessions', sessionsRouter);
-app.use('/registrations', registrationsRouter);
-app.use('/companies', companiesRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

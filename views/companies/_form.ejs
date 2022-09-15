@@ -1,4 +1,4 @@
-<form action="/companies/<%= typeof(company) == 'undefined' ? '' : company.id  %>" method="post"> 
+<form action="/companies/<%= typeof(company) == 'undefined' ? '' : company.attributes.id  %>" method="post"> 
   <label for="company_name">
     <i class="fas fa-building"></i>
   </label>
