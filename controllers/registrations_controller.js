@@ -1,4 +1,5 @@
-var ApplicationController = require('./application_controller')
+const ApplicationController = require('./application_controller')
+const bcrypt = require("bcrypt")
 
 class RegistrationsController extends ApplicationController {
 
@@ -19,29 +20,34 @@ class RegistrationsController extends ApplicationController {
       response.redirect('/registrations/new')
       return
     }
+    try {
+      let users = await db.search(
+        'users',
+        { "email": email }
+      )
+  
+      let hashed_password = await bcrypt.hash(password, 10)
+  
+      db.insert(
+        'users',
+        {
+          "first_name": first_name,
+          "last_name": last_name,
+          "email": email,
+          "password": hashed_password,
+        }
+      )
+      request.flash("success", "User successfully created")
+      response.redirect('/');
 
-    let users = await db.search(
-      'users',
-      { "email": email }
-    )
-
-    if (users.rowCount > 0) {
-      request.flash("error", "This user already exists")
-      response.redirect('/registrations/new')
-      return
-    }
-
-    db.insert(
-      'users',
-      {
-        "first_name": first_name,
-        "last_name": last_name,
-        "email": email,
-        "password": password,
+    } catch (error) {
+      if (error === 'NoMatchFound') {
+        request.flash("error", "This user already exists")
+        response.redirect('/registrations/new')
+        return
       }
-    )
-    request.flash("success", "User successfully created")
-    response.redirect('/');
+    }
+  
   }
 }
 

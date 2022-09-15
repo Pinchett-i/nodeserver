@@ -107,7 +107,8 @@ class PostgresConnection {
 
   parseResults(results) {
     if (results.rowCount == 0) {
-      throw 'NoMatchFound'
+    // TODO  hhandle search with no match gracefully
+      //  throw 'NoMatchFound'
     }
     return results.rows
   }
