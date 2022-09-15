@@ -6,14 +6,27 @@ class PostgresConnection {
     this.client = this.getClient(config)
   }
 
-  search(table, fields) {
+  async search(table, fields) {
     let fields_values = Object.values(fields)
-    return this.client.query(this.get_search_query_string(table, fields), fields_values)
+    let results = await this.client.query(this.get_search_query_string(table, fields), fields_values)
+    return this.parseResults(results)
   }
 
-  insert(table, fields) {
+  async insert(table, fields) {
     let fields_values = Object.values(fields)
-    return this.client.query(this.get_insert_query_string(table, fields), fields_values)
+    let results = await this.client.query(this.get_insert_query_string(table, fields), fields_values)
+    return this.parseResults(results)
+  }
+
+  async update(table, fields, _id) {
+    let fields_values = Object.values(fields)
+    let results = await this.client.query(this.get_update_query_string(table, fields, _id), fields_values)
+    return this.parseResults(results)
+  }
+
+  async delete(table, ids) {
+    let results = await this.client.query(this.get_delete_query_string(table, ids))
+    return this.parseResults(results)
   }
 
   //  PRIVATE
@@ -67,6 +80,36 @@ class PostgresConnection {
     return fields_keys.map(function (key, index) {
       return `$${index + 1}`;
     }).join(', ');
+  }
+
+  get_update_query_string(table, fields, _id) {
+    let fields_keys = Object.keys(fields)
+    if (fields_keys.length == 0) return
+
+    let str = `UPDATE ${table} SET `
+    str += fields_keys.map((key, index)=>{return `${key} = $${index + 1}`}).join(', ')
+
+    if (_id == null) { return str }
+
+    str += ` WHERE id = ${_id}`
+
+    return str
+  }
+
+  get_delete_query_string(table, ids) {
+    let str = `DELETE FROM ${table}`
+    if (ids.length == 0) return str
+
+    str += ` WHERE id IN (${ids.join()})`
+
+    return str
+  }
+
+  parseResults(results) {
+    if (results.rowCount == 0) {
+      throw 'NoMatchFound'
+    }
+    return results.rows
   }
 }
 
