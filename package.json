@@ -20,6 +20,7 @@
     "http-errors": "~1.6.3",
     "morgan": "~1.9.1",
     "node-pg-migrate": "^6.2.2",
-    "pg": "^8.8.0"
+    "pg": "^8.8.0",
+    "pluralize": "^8.0.0"
   }
 }
