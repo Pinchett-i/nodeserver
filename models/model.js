@@ -1,11 +1,11 @@
 const Pluralize = require('pluralize');
 var { dbConnection } = require('../services/database/database_service');
-
 class Model {
   constructor(attributes) {
     for (let key in attributes) {
       this[key] = attributes[key]
     }
+    this.belongs_to(this.relations)
   }
 
   static db() {
@@ -44,9 +44,7 @@ class Model {
       this.table(),
       attributes
     )
-
-    let company = new this(results[0])
-    return company
+    return new this(results[0])
   }
 
   async update(attributes) {
@@ -55,7 +53,6 @@ class Model {
       attributes,
       this.id
     )
-
     return new this.constructor(results[0])
   }
 
@@ -63,14 +60,31 @@ class Model {
     await this.constructor.db().delete(
       this.constructor.table(),
       [this.id]
-      )
-
+    )
     return this
   }
 
   validate() {
     throw 'undefinedMethod'
-    // TODO define validations per model + call before create &  (during?) update
+  }
+
+  belongs_to(models) {
+    models.forEach(model => {
+      this.define_relation_getter(model)
+    })
+  }
+
+  relations() {
+    return []
+  }
+
+  async define_relation_getter(model) {
+    let function_name = model.name.toLowerCase()
+    let foreign_key = `${function_name}_id`
+
+    this[function_name] = function () {
+       return model.find({id: this[foreign_key]})
+    }
   }
 }
 
