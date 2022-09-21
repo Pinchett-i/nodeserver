@@ -1,6 +1,5 @@
 const Pluralize = require('pluralize');
 var { dbConnection } = require('../services/database/database_service');
-
 class Model {
   constructor(attributes) {
     for (let key in attributes) {
