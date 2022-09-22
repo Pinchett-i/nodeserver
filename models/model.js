@@ -88,7 +88,7 @@ class Model {
         table_name,
         { id: this[foreign_key] }
       )
-      return results
+      return results[0]
     }
   }
 }
