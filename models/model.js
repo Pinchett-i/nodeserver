@@ -5,6 +5,7 @@ class Model {
     for (let key in attributes) {
       this[key] = attributes[key]
     }
+    this.belongs_to(this.relations)
   }
 
   static db() {
@@ -62,14 +63,33 @@ class Model {
     await this.constructor.db().delete(
       this.constructor.table(),
       [this.id]
-      )
+    )
 
     return this
   }
 
   validate() {
     throw 'undefinedMethod'
-    // TODO define validations per model + call before create &  (during?) update
+  }
+
+  belongs_to(model_names) {
+    model_names.forEach(model => {
+      this.define_relation_getter(model_name)
+    })
+  }
+
+  async define_relation_getter(model_name) {
+    let function_name = model_name.toLowerCase()
+    let foreign_key = `${function_name}_id`
+    let table_name = Pluralize(function_name).toLowerCase()
+
+    this[function_name] = async function () {
+      let results = await this.constructor.db().search(
+        table_name,
+        { id: this[foreign_key] }
+      )
+      return results
+    }
   }
 }
 
