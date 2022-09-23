@@ -44,9 +44,7 @@ class Model {
       this.table(),
       attributes
     )
-
-    let company = new this(results[0])
-    return company
+    return new this(results[0])
   }
 
   async update(attributes) {
@@ -55,7 +53,6 @@ class Model {
       attributes,
       this.id
     )
-
     return new this.constructor(results[0])
   }
 
@@ -64,7 +61,6 @@ class Model {
       this.constructor.table(),
       [this.id]
     )
-
     return this
   }
 
@@ -72,23 +68,22 @@ class Model {
     throw 'undefinedMethod'
   }
 
-  belongs_to(model_names) {
-    model_names.forEach(model => {
-      this.define_relation_getter(model_name)
+  belongs_to(models) {
+    models.forEach(model => {
+      this.define_relation_getter(model)
     })
   }
 
-  async define_relation_getter(model_name) {
-    let function_name = model_name.toLowerCase()
-    let foreign_key = `${function_name}_id`
-    let table_name = Pluralize(function_name).toLowerCase()
+  relations() {
+    return []
+  }
 
-    this[function_name] = async function () {
-      let results = await this.constructor.db().search(
-        table_name,
-        { id: this[foreign_key] }
-      )
-      return results[0]
+  async define_relation_getter(model) {
+    let function_name = model.name.toLowerCase()
+    let foreign_key = `${function_name}_id`
+
+    this[function_name] = function () {
+       return model.find({id: this[foreign_key]})
     }
   }
 }
