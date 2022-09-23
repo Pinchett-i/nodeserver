@@ -53,18 +53,21 @@ class PostgresConnection {
     }
   }
 
-  get_search_query_string(table, fields) {
+  get_search_query_string(table, fields, _joins) {
     let fields_keys = Object.keys(fields)
     if (fields_keys.length == 0) { return `SELECT * FROM ${table}` }
 
     let str = `SELECT * FROM ${table} WHERE ${fields_keys[0]} = $1`
-    if (fields_keys.length == 1) {
-      return str
-    }
 
     for (let index = 1; index < fields_keys.length; index++) {
       let key = fields_keys[index]
       str += `AND ${key} = $${index + 1}`
+    }
+
+    if (typeof(_joins) !== undefined) {
+      for (join in _joins) {
+        str += `JOIN "${join.table}" ON "${join.table}"."id" = "${table}"."${join.foreign_key}"`
+      }
     }
     return str
   }
