@@ -1,5 +1,17 @@
 <div>
   <h1>Companies</h1>
+  <% if (true) { %>
+  <% projects.forEach(project => { %>
+    <%= JSON.stringify(project) %>
+    <%= project.name %>
+    
+    <br>
+    <%= project.id %>
+    <br>
+    <%= project.bla %>
+
+  <% }) %>
+<% } %>
   <%- include('./_table.ejs') %>
   <a href="/companies/new">New Company </a>
 </div>

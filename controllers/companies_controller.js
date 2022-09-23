@@ -1,11 +1,38 @@
 var Company = require('../models/company')
+var Project = require('../models/project')
 var ApplicationController = require('./application_controller')
 
 class CompaniesController extends ApplicationController {
 
   static async index(request, response) {
     let companies = await Company.all()
-    response.render('companies/index', { title: 'Companies', layout: './layouts/application', companies: companies });
+    let projects =  await Project.all()
+
+    
+    let z = await Promise.all(projects.map(async project => {
+       project['bla'] = await project.company()
+    }))
+    z
+    console.log("🚀 ~ file: companies_controller.js ~ line 15 ~ CompaniesController ~ z ~ z", z)
+
+    
+
+    let  x = await projects[0].company()
+    console.log("🚀 ~ file: companies_controller.js ~ line 16 ~ CompaniesController ~ index ~ x", x)
+    projects[0].company().then((results) => {
+      console.log("🚀 ~ file: companies_controller.js ~ line 18 ~ CompaniesController ~ y ~ results", results)
+    } )
+    // console.log("🚀 ~ file: companies_controller.js ~ line 14 ~ CompaniesController ~ index ~ projects", projects)
+    // console.log("🚀 ~ file: companies_controller.js ~ line 12 ~ CompaniesController ~ index ~ project.company 2nd", await project.company())
+    
+    response.render('companies/index', { title: 'Companies', layout: './layouts/application', companies: companies, projects: projects });
+  }
+
+  async populateProjects(projects) {
+    let promises = []
+    projects.forEach(async project => {
+      project['bla'] = await project.company()
+    });
   }
 
   static newAction(request, response) {
