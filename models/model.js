@@ -5,7 +5,8 @@ class Model {
     for (let key in attributes) {
       this[key] = attributes[key]
     }
-    this.belongs_to(this.relations)
+    this.belongs_to(this.relations().single)
+    this.has_many(this.relations().multiple)
   }
 
   static db() {
@@ -70,7 +71,17 @@ class Model {
 
   belongs_to(models) {
     models.forEach(model => {
-      this.define_relation_getter(model)
+      if (Object.keys(model).length !== 0  || typeof(model)=== 'function') {
+        this.define_single_relation_getter(model)
+      }
+    })
+  }
+
+  has_many(models) {
+    models.forEach(model => {
+      if (Object.keys(model).length !== 0 || typeof(model)=== 'function') {
+        this.define_has_many_relation_getter(model)
+      }
     })
   }
 
@@ -78,12 +89,23 @@ class Model {
     return []
   }
 
-  async define_relation_getter(model) {
+  async define_single_relation_getter(model) {
     let function_name = model.name.toLowerCase()
     let foreign_key = `${function_name}_id`
 
     this[function_name] = function () {
        return model.find({id: this[foreign_key]})
+    }
+  }
+
+  async define_has_many_relation_getter(model) {
+    let function_name = Pluralize(model.name).toLowerCase()
+    let foreign_key = `${this.constructor.name.toLowerCase()}_id`
+    let dict = {}
+    dict[foreign_key] = this.id
+
+    this[function_name] = function () {
+       return model.where(dict)
     }
   }
 }
