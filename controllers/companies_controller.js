@@ -5,6 +5,9 @@ class CompaniesController extends ApplicationController {
 
   static async index(request, response) {
     let companies = await Company.all()
+    await Promise.all(companies.map(async company => {
+      company.projects = await company.projects()
+    }))
     response.render('companies/index', { title: 'Companies', layout: './layouts/application', companies: companies });
   }
 
@@ -108,6 +111,7 @@ class CompaniesController extends ApplicationController {
         {
           id: id
         })
+      company.projects = await company.projects()
 
       response.render('companies/show', { title: `${company.name}`, layout: './layouts/application', company: company });
     } catch (e) {
