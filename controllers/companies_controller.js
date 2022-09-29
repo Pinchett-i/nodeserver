@@ -1,5 +1,5 @@
-var Company = require('../models/company')
-var ApplicationController = require('./application_controller')
+const Company = require('../models/company')
+const ApplicationController = require('./application_controller')
 
 class CompaniesController extends ApplicationController {
 
@@ -118,6 +118,8 @@ class CompaniesController extends ApplicationController {
       if (e == 'NoMatchFound') {
         request.flash("error", "Company doesn't exist")
         response.redirect('/companies')
+      } else {
+        console.error(e)
       }
     }
   }

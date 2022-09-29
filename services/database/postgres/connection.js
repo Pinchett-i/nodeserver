@@ -6,10 +6,10 @@ class PostgresConnection {
     this.client = this.getClient(config)
   }
 
-  async search(table, fields, _join) {
+  async search(table, fields) {
     let fields_values = Object.values(fields).flat()
     let results = await this.client.query({
-      text: this.get_search_query_string(table, fields, _join), 
+      text: this.get_search_query_string(table, fields), 
       values: fields_values,
     })
     return this.parseResults(results)
@@ -61,10 +61,6 @@ class PostgresConnection {
     let fields_values = Object.values(fields)
     let str = `SELECT * FROM "${table}"`
     if (fields_keys.length == 0) { return str }
-
-    if (typeof (_join) !== 'undefined') {
-      str += ` LEFT JOIN "${_join.table}" ON "${_join.table}"."${_join.foreign_key}" = "${table}"."id"`
-    }
 
     str += ` WHERE `
 
