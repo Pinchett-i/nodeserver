@@ -1,6 +1,6 @@
-var express = require('express');
+import express from "express";
+import SessionsController from "../controllers/sessions_controller.mjs";
 var router = express.Router();
-var SessionsController = require('../controllers/sessions_controller')
 
 router.get('/', function (request, response, next) {
   SessionsController.login(request, response)
@@ -10,8 +10,8 @@ router.get('/new', function (request, response, next) {
   SessionsController.newAction(request, response)
 });
 
-router.post('/auth', (request, response) => {  
+router.post('/auth', (request, response) => {
   SessionsController.authenticate(request, response);
 })
 
-module.exports = router
+export default router

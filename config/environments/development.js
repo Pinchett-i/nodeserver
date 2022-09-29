@@ -1,5 +1,4 @@
-
-let config = {
+let developement_config = {
   "db": {
     "user": process.env.DB_USER || "nodeserver",
     "password": process.env.DB_PASSWORD,
@@ -11,4 +10,4 @@ let config = {
   }
 }
 
-module.exports = config
+export default developement_config

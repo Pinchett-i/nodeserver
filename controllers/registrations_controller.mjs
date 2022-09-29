@@ -1,14 +1,13 @@
-const ApplicationController = require('./application_controller')
-const bcrypt = require("bcrypt")
+import ApplicationController from "./application_controller.mjs";
+import bcrypt from "bcrypt";
+import User from "../models/user.mjs";
 
 class RegistrationsController extends ApplicationController {
-
   static newAction(request, response) {
     response.render('registrations/new', { title: 'Sign Up', layout: './layouts/application' });
   }
 
   static async register_user(request, response) {
-    let db = request.app.get('db')
     let first_name = request.body.first_name;
     let last_name = request.body.last_name;
     let password = request.body.password;
@@ -21,15 +20,13 @@ class RegistrationsController extends ApplicationController {
       return
     }
     try {
-      let users = await db.search(
-        'users',
+      let existing_users = await User.find(
         { "email": email }
       )
-  
+
       let hashed_password = await bcrypt.hash(password, 10)
-  
-      db.insert(
-        'users',
+
+      User.create(
         {
           "first_name": first_name,
           "last_name": last_name,
@@ -47,8 +44,7 @@ class RegistrationsController extends ApplicationController {
         return
       }
     }
-  
   }
 }
 
-module.exports = RegistrationsController
+export default RegistrationsController

@@ -6,6 +6,7 @@
     "start": "node ./bin/www",
     "migrate": "node-pg-migrate"
   },
+  "type": "module",
   "dependencies": {
     "bcrypt": "^5.0.1",
     "body-parser": "^1.20.0",

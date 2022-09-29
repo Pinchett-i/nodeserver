@@ -1,13 +1,13 @@
-var express = require('express');
+import express from "express";
+import CompaniesController from "../controllers/companies_controller.mjs";
 var router = express.Router();
-var CompaniesController = require('../controllers/companies_controller')
 
 router.get('/', function (request, response, next) {
   CompaniesController.index(request, response)
 });
 
 router.get('/new', function (request, response, next) {
- CompaniesController.newAction(request, response)
+  CompaniesController.newAction(request, response)
 });
 
 router.post('/', (request, response) => {
@@ -30,4 +30,4 @@ router.get('/:id/delete', (request, response) => {
   CompaniesController.destroy(request, response)
 })
 
-module.exports = router
+export default router
