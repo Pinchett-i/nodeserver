@@ -1,5 +1,5 @@
-const { Pool, Client } = require('pg')
-
+import pg from "pg";
+const { Pool, Client } = pg
 class PostgresConnection {
   constructor(config) {
     this.config = config
@@ -9,7 +9,7 @@ class PostgresConnection {
   async search(table, fields) {
     let fields_values = Object.values(fields).flat()
     let results = await this.client.query({
-      text: this.get_search_query_string(table, fields), 
+      text: this.get_search_query_string(table, fields),
       values: fields_values,
     })
     return this.parseResults(results)
@@ -65,22 +65,22 @@ class PostgresConnection {
     str += ` WHERE `
 
     let values_index = 1
-    for(let i = 0; i < fields_values.length; i++) {
+    for (let i = 0; i < fields_values.length; i++) {
       let field_value = fields_values[i]
-        if (Array.isArray(field_value)) {
-          str+= field_value.map(value => {
-            let condition = `"${table}"."${fields_keys[i]}" = $${values_index}`
-            values_index ++ ;
-            return condition
-          }).join(' OR ');
-        } else {
-          if (i > 0) {
-            str += ' AND '
-          }
-          str+= `"${table}"."${fields_keys[i]}" = $${values_index}`
-          values_index ++;
+      if (Array.isArray(field_value)) {
+        str += field_value.map(value => {
+          let condition = `"${table}"."${fields_keys[i]}" = $${values_index}`
+          values_index++;
+          return condition
+        }).join(' OR ');
+      } else {
+        if (i > 0) {
+          str += ' AND '
         }
+        str += `"${table}"."${fields_keys[i]}" = $${values_index}`
+        values_index++;
       }
+    }
 
     return str
   }
@@ -123,11 +123,11 @@ class PostgresConnection {
 
   parseResults(results) {
     if (results.rowCount == 0) {
-    // TODO  hhandle search with no match gracefully
+      // TODO  hhandle search with no match gracefully
       //  throw 'NoMatchFound'
     }
     return results.rows
   }
 }
 
-module.exports = PostgresConnection
+export default PostgresConnection

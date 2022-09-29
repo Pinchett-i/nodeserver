@@ -1,5 +1,5 @@
-const Pluralize = require('pluralize');
-var { dbConnection } = require('../services/database/database_service');
+import Pluralize from "pluralize";
+import dbConnection from "../services/database/database_service.mjs";
 
 class Model {
   constructor(attributes) {
@@ -10,7 +10,7 @@ class Model {
   }
 
   static db() {
-    return dbConnection
+    return dbConnection()
   }
 
   static table() {
@@ -146,4 +146,4 @@ class Model {
   }
 }
 
-module.exports = Model
+export default Model

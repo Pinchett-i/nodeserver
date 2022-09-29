@@ -1,0 +1,11 @@
+{
+  "db": {
+    "user": "nodeserver",
+    "password": "nodeserver",
+    "host": "localhost",
+    "port": 5432,
+    "threads": 5,
+    "database": "nodeserver_development",
+    "system": "postgres"
+  }
+}

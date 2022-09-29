@@ -1,5 +1,5 @@
-const Company = require('../models/company')
-const ApplicationController = require('./application_controller')
+import Company from "../models/company.mjs";
+import ApplicationController from "./application_controller.mjs";
 
 class CompaniesController extends ApplicationController {
 
@@ -126,4 +126,4 @@ class CompaniesController extends ApplicationController {
 }
 
 
-module.exports = CompaniesController
+export default CompaniesController

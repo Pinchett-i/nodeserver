@@ -1,5 +1,6 @@
-const ApplicationController = require('./application_controller')
-const bcrypt = require("bcrypt")
+import ApplicationController from "./application_controller.mjs";
+import bcrypt from "bcrypt";
+import User from '../models/user.mjs'
 
 class SessionsController extends ApplicationController {
 
@@ -15,7 +16,6 @@ class SessionsController extends ApplicationController {
   }
 
   static async authenticate(request, response) {
-    let db = request.app.get('db')
     let email = request.body.email;
     let password = request.body.password;
 
@@ -25,18 +25,17 @@ class SessionsController extends ApplicationController {
       return
     }
 
-    let results = await db.search(
-      'users',
+    let user = await User.find(
       { "email": email }
     )
 
-    if (results.length === 0) {
+    if (typeof (user) === 'undefined') {
       request.flash("error", "Invalid Email")
       response.redirect('/')
       return
     }
 
-    const password_match = await bcrypt.compare(password, results[0].password)
+    const password_match = await bcrypt.compare(password, user.password)
 
     if (password_match === false) {
       request.flash("error", "Incorrect Password")
@@ -55,4 +54,4 @@ class SessionsController extends ApplicationController {
   }
 }
 
-module.exports = SessionsController
+export default SessionsController
