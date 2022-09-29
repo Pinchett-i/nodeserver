@@ -6,9 +6,12 @@ class PostgresConnection {
     this.client = this.getClient(config)
   }
 
-  async search(table, fields) {
-    let fields_values = Object.values(fields)
-    let results = await this.client.query(this.get_search_query_string(table, fields), fields_values)
+  async search(table, fields, _join) {
+    let fields_values = Object.values(fields).flat()
+    let results = await this.client.query({
+      text: this.get_search_query_string(table, fields, _join), 
+      values: fields_values,
+    })
     return this.parseResults(results)
   }
 
@@ -55,17 +58,34 @@ class PostgresConnection {
 
   get_search_query_string(table, fields) {
     let fields_keys = Object.keys(fields)
-    if (fields_keys.length == 0) { return `SELECT * FROM ${table}` }
+    let fields_values = Object.values(fields)
+    let str = `SELECT * FROM "${table}"`
+    if (fields_keys.length == 0) { return str }
 
-    let str = `SELECT * FROM ${table} WHERE ${fields_keys[0]} = $1`
-    if (fields_keys.length == 1) {
-      return str
+    if (typeof (_join) !== 'undefined') {
+      str += ` LEFT JOIN "${_join.table}" ON "${_join.table}"."${_join.foreign_key}" = "${table}"."id"`
     }
 
-    for (let index = 1; index < fields_keys.length; index++) {
-      let key = fields_keys[index]
-      str += `AND ${key} = $${index + 1}`
-    }
+    str += ` WHERE `
+
+    let values_index = 1
+    for(let i = 0; i < fields_values.length; i++) {
+      let field_value = fields_values[i]
+        if (Array.isArray(field_value)) {
+          str+= field_value.map(value => {
+            let condition = `"${table}"."${fields_keys[i]}" = $${values_index}`
+            values_index ++ ;
+            return condition
+          }).join(' OR ');
+        } else {
+          if (i > 0) {
+            str += ' AND '
+          }
+          str+= `"${table}"."${fields_keys[i]}" = $${values_index}`
+          values_index ++;
+        }
+      }
+
     return str
   }
 
