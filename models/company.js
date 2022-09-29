@@ -1,13 +1,15 @@
 const Model = require('./model')
-const Project = require('./project')
 
 class Company extends Model {
   relations() {
     return {
       single: [],
-      multiple: [Project]
+      has_many: [Index.Project],
+      has_many_through: []
     }
   }
 }
 
 module.exports = Company
+
+const Index = require('./index')
