@@ -1,6 +1,7 @@
 import ApplicationController from "./application_controller.mjs";
 import bcrypt from "bcrypt";
 import User from "../models/user.mjs";
+import Role from '../models/role.mjs'
 
 class RegistrationsController extends ApplicationController {
   static newAction(request, response) {
@@ -20,7 +21,7 @@ class RegistrationsController extends ApplicationController {
       return
     }
     try {
-      let existing_users = await User.find(
+      await User.find(
         { "email": email }
       )
 

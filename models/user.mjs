@@ -1,5 +1,6 @@
 import Model from "./model.mjs";
 import Role from './role.mjs';
+
 class User extends Model {
   relations() {
     return {

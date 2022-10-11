@@ -1,22 +1,38 @@
 import Project from "../models/project.mjs";
 import ApplicationController from "./application_controller.mjs";
+import authorize from "../policies/authorize.mjs";
 
 class ProjectsController extends ApplicationController {
 
   static async index(request, response) {
-    let projects = await Project.all()
+    let authorized = await authorize('projects', 'index', request.session.current_user_id)
+    if (!authorized) {
+      this.handle_unauthorized(request, response);
+      return;
+    }
+    let projects = await Project.all() //TODO policy scope
     await Promise.all(projects.map(async project => {
       project.company = await project.company()
     }))
     response.render('projects/index', { title: 'Projects', layout: './layouts/application', projects: projects });
   }
 
-  static newAction(request, response) {
+  static async newAction(request, response) {
+    let authorized = await authorize('projects', 'new', request.session.current_user_id)
+    if (!authorized) {
+      this.handle_unauthorized(request, response);
+      return;
+    }
     response.render('projects/new', { title: 'New Project', layout: './layouts/application' });
   }
 
   static async create(request, response) {
     try {
+      let authorized = await authorize('projects', 'create', request.session.current_user_id)
+      if (!authorized) {
+        this.handle_unauthorized(request, response);
+        return;
+      }
       let name = request.body.name;
       let project = await Project.create(
         {
@@ -36,6 +52,11 @@ class ProjectsController extends ApplicationController {
 
   static async edit(request, response) {
     try {
+      let authorized = await authorize('projects', 'edit', request.session.current_user_id)
+      if (!authorized) {
+        this.handle_unauthorized(request, response);
+        return;
+      }
       let id = request.params.id
       let project = await Project.find(
         {
@@ -56,6 +77,11 @@ class ProjectsController extends ApplicationController {
   static async update(request, response) {
     let id = request.params.id
     try {
+      let authorized = await authorize('projects', 'update', request.session.current_user_id)
+      if (!authorized) {
+        this.handle_unauthorized(request, response);
+        return;
+      }
 
       let project = await Project.find(
         {
@@ -64,7 +90,7 @@ class ProjectsController extends ApplicationController {
 
       await project.update(
         {
-          name: request.body.company_name
+          name: request.body.project_name
         }
       )
       request.flash("success", "Project successfully updated")
@@ -83,6 +109,11 @@ class ProjectsController extends ApplicationController {
 
   static async destroy(request, response) {
     try {
+      let authorized = await authorize('projects', 'destroy', request.session.current_user_id)
+      if (!authorized) {
+        this.handle_unauthorized(request, response);
+        return;
+      }
       let id = request.params.id
       let project = await Project.find(
         {
@@ -106,6 +137,11 @@ class ProjectsController extends ApplicationController {
 
   static async show(request, response) {
     try {
+      let authorized = await authorize('projects', 'show', request.session.current_user_id)
+      if (!authorized) {
+        this.handle_unauthorized(request, response);
+        return;
+      }
       let id = request.params.id
       let project = await Project.find(
         {
