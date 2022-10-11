@@ -1,7 +1,6 @@
 import ApplicationController from "./application_controller.mjs";
 import bcrypt from "bcrypt";
 import User from '../models/user.mjs'
-
 class SessionsController extends ApplicationController {
 
   static login(request, response) {
@@ -43,13 +42,13 @@ class SessionsController extends ApplicationController {
       return
     }
 
-    this.log_in(request, response, email)
+    this.log_in(request, response, user)
   }
 
-  static log_in(request, response, email) {
+  static log_in(request, response, user) {
     request.flash("success", "Successfully Logged In")
     request.session.loggedin = true;
-    request.session.email = email;
+    request.session.current_user_id = user.id;
     response.redirect('/home')
   }
 }

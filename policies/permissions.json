@@ -1,0 +1,48 @@
+{
+  "projects": {
+    "index": {
+      "requires_login": true,
+      "authorized_roles": [
+        "manager",
+        "viewer"
+      ]
+    },
+    "show": {
+      "requires_login": true,
+      "authorized_roles": [
+        "manager",
+        "viewer"
+      ]
+    },
+    "create": {
+      "requires_login": true,
+      "authorized_roles": [
+        "manager"
+      ]
+    },
+    "new": {
+      "requires_login": true,
+      "authorized_roles": [
+        "manager"
+      ]
+    },
+    "update": {
+      "requires_login": true,
+      "authorized_roles": [
+        "manager"
+      ]
+    },
+    "edit": {
+      "requires_login": true,
+      "authorized_roles": [
+        "manager"
+      ]
+    },
+    "destroy": {
+      "requires_login": true,
+      "authorized_roles": [
+        "manager"
+      ]
+    }
+  }
+}
