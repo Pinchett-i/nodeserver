@@ -1,0 +1,7 @@
+<form action="/projects/<%= typeof(project) == 'undefined' ? '' : project.id  %>" method="post"> 
+  <label for="name">
+    <i class="fas fa-building"></i>
+  </label>
+  <input type="text" name="project_name" placeholder="Project Name" id="name" required>
+  <input type="submit" value="<%= typeof(project) == 'undefined' ? 'Create Project' : 'Update Project'  %>">
+</form>
