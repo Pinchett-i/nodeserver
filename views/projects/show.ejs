@@ -1,0 +1,30 @@
+<table>
+  <thead>
+    <tr>
+      <td>ID</td>
+      <td>Name</td>
+      <td>Company</td>
+      <td>Actions</td>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><%= project.id %></td>
+      <td><%= project.name %></td>
+      <td><%= project.company.name %></td>
+      <td>
+        <a href=<%=`/projects/${project.id}`%> >
+          <i class="fas fa-eye"></i>
+        </a>
+        <a href=<%=`/projects/${project.id}/edit`%> >
+          <i class="fas fa-pen"></i>
+        </a>
+        <a href=<%=`/projects/${project.id}/delete`%> >
+            <i class="fas fa-trash"></i>
+        </a>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<a href="/projects">Back</a>
