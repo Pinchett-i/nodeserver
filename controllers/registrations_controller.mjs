@@ -25,13 +25,14 @@ class RegistrationsController extends ApplicationController {
       )
 
       let hashed_password = await bcrypt.hash(password, 10)
-
-      User.create(
+      let role = await Role.find({ name: 'viewer' })
+      await User.create(
         {
           "first_name": first_name,
           "last_name": last_name,
           "email": email,
           "password": hashed_password,
+          "role_id":  role.id
         }
       )
       request.flash("success", "User successfully created")
