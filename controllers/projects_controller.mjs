@@ -1,8 +1,34 @@
 import Project from "../models/project.mjs";
 import ApplicationController from "./application_controller.mjs";
 import authorize from "../policies/authorize.mjs";
+import TimeManagerService from "../services/timemanager_service.mjs";
 
 class ProjectsController extends ApplicationController {
+
+  static async hours(request, response) {
+    try {
+      let authorized = await authorize('projects', 'render_invoice', request.session.current_user_id)
+      if (!authorized) {
+        this.handle_unauthorized(request, response);
+        return;
+      }
+      let id = request.params.id
+      let project = await Project.find(
+        {
+          id: id
+        })
+      let hours = await TimeManagerService.hours_for_project(project)
+
+      response.render('projects/hours', { project: project, hours: hours })
+    } catch (e) {
+      if (e == 'NoMatchFound') {
+        request.flash("error", "Project doesn't exist")
+        response.redirect('/projects')
+      } else {
+        console.error(e)
+      }
+    }
+  }
 
   static async index(request, response) {
     let authorized = await authorize('projects', 'index', request.session.current_user_id)
