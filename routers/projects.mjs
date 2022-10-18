@@ -30,4 +30,8 @@ router.get('/:id/delete', (request, response) => {
   ProjectsController.destroy(request, response)
 })
 
+router.get('/:id/hours', (request, response) => {
+  ProjectsController.hours(request, response)
+})
+
 export default router

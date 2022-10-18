@@ -43,6 +43,13 @@
       "authorized_roles": [
         "manager"
       ]
+    },
+    "hours": {
+      "requires_login": true,
+      "authorized_roles": [
+        "manager"
+      ]
+      
     }
   }
 }
