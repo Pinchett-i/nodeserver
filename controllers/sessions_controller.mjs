@@ -18,7 +18,7 @@ class SessionsController extends ApplicationController {
     let email = request.body.email;
     let password = request.body.password;
 
-    if (email == undefined || password == undefined) {
+    if (typeof(email) === 'undefined' || typeof(password) === 'undefined') {
       request.flash("error", "Missing Email &/OR Password")
       response.redirect('/')
       return
@@ -28,7 +28,7 @@ class SessionsController extends ApplicationController {
       { "email": email }
     )
 
-    if (typeof (user) === 'undefined') {
+    if (typeof(user.id) === 'undefined') {
       request.flash("error", "Invalid Email")
       response.redirect('/')
       return
