@@ -54,7 +54,7 @@ app.use(function (err, req, res, next) {
   res.render('error');
 });
 
-const port = 3000
+const port = config.get('app.port')
 app.listen(port, () => {
   console.log(`${app.name} listening on port ${port}`)
 })

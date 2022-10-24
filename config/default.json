@@ -1,4 +1,7 @@
 {
+  "app": {
+    "port": 3001
+  },
   "db": {
     "user": "nodeserver",
     "password": "nodeserver",
@@ -10,6 +13,9 @@
   },
   "timemanager": {
     "host": "timemanager-staging.blue-planet.be",
-    "api_key": "placeholder_key"
+    "headers": {
+      "AUTHORIZATION": "placeholder_key"
+    },
+    "protocol": "https:"
   }
 }
