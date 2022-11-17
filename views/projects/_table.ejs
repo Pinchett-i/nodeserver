@@ -4,6 +4,7 @@
     <tr>
       <td>ID</td>
       <td>Name</td>
+      <td>Company</td>
       <td>Actions</td>
     </tr>
   </thead>
@@ -12,6 +13,7 @@
     <tr>
       <td><%= project.id %></td>
       <td><%= project.name %></td>
+      <td><%= project.company.name %></td>
       <td>
         <a href=<%=`/projects/${project.id}/hours`%> >
           <i class="fas fa-file-invoice"></i>

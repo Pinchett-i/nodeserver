@@ -169,12 +169,7 @@ class ProjectsController extends ApplicationController {
         return;
       }
       let id = request.params.id
-      let project = await Project.find(
-        {
-          id: id
-        })
-      project.company = await project.company()
-
+      let project = await this.get_project(id)
       response.render('projects/show', { title: `${project.name}`, layout: './layouts/application', project: project });
     } catch (e) {
       if (e == 'NoMatchFound') {
@@ -184,6 +179,20 @@ class ProjectsController extends ApplicationController {
         console.error(e)
       }
     }
+  }
+
+  static async handle_no_match_found() {
+    request.flash("error", "Project doesn't exist")
+    response.redirect('/projects')
+  }
+
+  static async get_project(id) {
+    let project = await Project.find(
+      {
+        id: id
+      })
+    project.company = await project.company()
+    return project
   }
 }
 
