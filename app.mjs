@@ -2,6 +2,7 @@ import { fileURLToPath } from "url";
 import { dirname } from "path";
 const __dirname = dirname(fileURLToPath(import.meta.url));
 import createError from "http-errors";
+import config from "config";
 import express from "express";
 import path from "path";
 import cookieParser from "cookie-parser";
@@ -54,7 +55,7 @@ app.use(function (err, req, res, next) {
   res.render('error');
 });
 
-const port = 3000
+const port = config.get('app.port')
 app.listen(port, () => {
   console.log(`${app.name} listening on port ${port}`)
 })
