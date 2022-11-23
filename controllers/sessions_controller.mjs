@@ -46,6 +46,18 @@ class SessionsController extends ApplicationController {
     request.session.current_user_id = user.id;
     response.redirect('/home')
   }
+
+  static log_out(request, response) {
+    if (request.session) {
+      request.session.loggedin = false
+      request.session.current_user_id = null
+      request.flash("success", "Successfully Logged Out")
+      response.redirect('/')
+    } else {
+      request.flash("error", "You are not logged in")
+      response.redirect('/')
+    }
+  }
 }
 
 export default SessionsController

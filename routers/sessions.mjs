@@ -10,4 +10,8 @@ router.post('/auth', (request, response) => {
   SessionsController.authenticate(request, response);
 })
 
+router.post('/destroy', (request, response) => {
+  SessionsController.log_out(request, response);
+})
+
 export default router
