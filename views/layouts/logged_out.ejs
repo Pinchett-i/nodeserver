@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<div lang="en">
+
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>
+      <% if (typeof(title) === 'undefined') { %>
+        NodeServer
+      <% } else { %>
+        <%= title %>
+      <% } %>
+    </title>
+    <script src="https://kit.fontawesome.com/1a8a9676bd.js" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="/stylesheets/style.css" />
+  </head>
+
+  <body>
+    <div class="wrapper">
+      <%- include('../partials/_flash.ejs') %>
+      <main><%- body %></main>
+
+    </div>
+  </body>
+
+</div>

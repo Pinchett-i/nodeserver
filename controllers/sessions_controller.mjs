@@ -3,14 +3,10 @@ import bcrypt from "bcrypt";
 import User from '../models/user.mjs'
 class SessionsController extends ApplicationController {
 
-  static login(request, response) {
-    response.render('sessions/new', { title: 'Login', layout: './layouts/application' });
-  }
-
   static newAction(request, response) {
     response.render('sessions/new', {
       title: 'Login',
-      layout: './layouts/application'
+      layout: './layouts/logged_out'
     });
   }
 
@@ -27,7 +23,6 @@ class SessionsController extends ApplicationController {
     let user = await User.find(
       { "email": email }
     )
-
     if (typeof (user) === 'undefined') {
       request.flash("error", "Invalid Email")
       response.redirect('/')

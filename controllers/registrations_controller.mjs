@@ -5,7 +5,7 @@ import Role from '../models/role.mjs'
 
 class RegistrationsController extends ApplicationController {
   static newAction(request, response) {
-    response.render('registrations/new', { title: 'Sign Up', layout: './layouts/application' });
+    response.render('registrations/new', { title: 'Sign Up', layout: './layouts/logged_out' });
   }
 
   static async register_user(request, response) {
