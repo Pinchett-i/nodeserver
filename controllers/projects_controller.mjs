@@ -1,4 +1,5 @@
 import Project from "../models/project.mjs";
+import Company from "../models/company.mjs";
 import ApplicationController from "./application_controller.mjs";
 import authorize from "../policies/authorize.mjs";
 import TimeManagerService from "../services/timemanager_service.mjs";
@@ -49,7 +50,8 @@ class ProjectsController extends ApplicationController {
       this.handle_unauthorized(request, response);
       return;
     }
-    response.render('projects/new', { title: 'New Project', layout: './layouts/application' });
+    let companies = await Company.all()
+    response.render('projects/new', { title: 'New Project', layout: './layouts/application', companies: companies });
   }
 
   static async create(request, response) {
@@ -59,10 +61,12 @@ class ProjectsController extends ApplicationController {
         this.handle_unauthorized(request, response);
         return;
       }
-      let name = request.body.name;
+      let project_name = request.body.project_name;
+      let company_id = request.body.company_id
       let project = await Project.create(
         {
-          name: name
+          name: project_name,
+          company_id: company_id
         }
       )
       request.flash("success", `${project.name} successfully created`)
@@ -83,13 +87,14 @@ class ProjectsController extends ApplicationController {
         this.handle_unauthorized(request, response);
         return;
       }
+      let companies = await Company.all()
       let id = request.params.id
       let project = await Project.find(
         {
           id: id
         })
-
-      response.render('projects/edit', { title: `Edit ${project.name}`, layout: './layouts/application', project: project });
+      let current_company = await project.company()
+      response.render('projects/edit', { title: `Edit ${project.name}`, layout: './layouts/application', project: project, companies: companies, current_company: current_company });
 
     }
     catch (e) {
@@ -108,7 +113,6 @@ class ProjectsController extends ApplicationController {
         this.handle_unauthorized(request, response);
         return;
       }
-
       let project = await Project.find(
         {
           id: id
@@ -116,7 +120,8 @@ class ProjectsController extends ApplicationController {
 
       await project.update(
         {
-          name: request.body.project_name
+          name: request.body.project_name,
+          company_id: request.body.company_id
         }
       )
       request.flash("success", "Project successfully updated")

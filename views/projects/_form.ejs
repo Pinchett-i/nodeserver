@@ -1,7 +1,23 @@
-<form action="/projects/<%= typeof(project) == 'undefined' ? '' : project.id  %>" method="post"> 
+<% is_new_project =  typeof(project) == 'undefined' %>
+<form action="/projects/<%= is_new_project ? '' : project.id  %>" method="post">
   <label for="name">
+    <i class="fas fa-pen"></i>
+  </label>
+  <input type="text" name="project_name" placeholder="Project Name" id="name" required
+    value="<%= is_new_project ? '' : project.name  %>">
+  <label for="company_id">
     <i class="fas fa-building"></i>
   </label>
-  <input type="text" name="project_name" placeholder="Project Name" id="name" required>
+  <select name="company_id" id="cars">
+    <% companies.forEach((company) => { %>
+      <% if (is_new_project) { %>
+        <% selected = false %>
+      <% } else { %>
+        <% selected = current_company.id === company.id %>
+      <% } %>
+      <option value="<%= company.id %>" <%=  selected ? 'selected' : '' %>><%= company.name %></option>
+    <% }) %>
+  </select>
+
   <input type="submit" value="<%= typeof(project) == 'undefined' ? 'Create Project' : 'Update Project'  %>">
 </form>
