@@ -45,7 +45,9 @@ class Model {
       attributes,
     )
 
-    return new this(results[0])
+    if (results.length > 0) {
+      return new this(results[0])
+    }
   }
 
   async update(attributes) {
