@@ -6,8 +6,32 @@ body {
   box-sizing: border-box;
 }
 
+main {
+  min-height: 80vh;
+}
+
 a {
   color: #00B7FF;
+}
+
+header, footer {
+  width: 100%;
+  background-color: #3274d6;
+  height: 10vh;
+}
+
+header a {
+  color: #fff;
+}
+
+header a:hover {
+  color: goldenrod
+}
+
+nav {
+  padding: 2rem;
+  display: flex;
+  justify-content: space-between;
 }
 
 .wrapper {
@@ -19,7 +43,7 @@ a {
 
 .flash {
 
-  width: 95%;
+  width: 100%;
   padding: 1rem;
   border-style: solid;
   border-width: 2px;
