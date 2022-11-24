@@ -1,0 +1,7 @@
+<form action="/employees/<%= typeof(employee) == 'undefined' ? '' : employee.id  %>" method="post"> 
+  <label for="employee_name">
+    <i class="fas fa-building"></i>
+  </label>
+  <input type="text" name="employee_name" placeholder="Employee Name" id="name" required>
+  <input type="submit" value="<%= typeof(employee) == 'undefined' ? 'Create Employee' : 'Update Employee'  %>">
+</form>

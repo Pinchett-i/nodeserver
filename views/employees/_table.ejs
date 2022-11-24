@@ -1,0 +1,29 @@
+<h1>Table</h1>
+<table>
+  <thead>
+    <tr>
+      <td>ID</td>
+      <td>Name</td>
+      <td>Actions</td>
+    </tr>
+  </thead>
+  <tbody>
+    <% employees.forEach(employee => {  %>
+    <tr>
+      <td><%= employee.id %></td>
+      <td><%= employee.name %></td>
+      <td>
+        <a href=<%=`/employees/${employee.id}`%> >
+          <i class="fas fa-eye"></i>
+        </a>
+        <a href=<%=`/employees/${employee.id}/edit`%> >
+          <i class="fas fa-pen"></i>
+        </a>
+        <a href=<%=`/employees/${employee.id}/delete`%> >
+            <i class="fas fa-trash"></i>
+        </a>
+      </td>
+    </tr>
+    <% }); %>
+  </tbody>
+</table>

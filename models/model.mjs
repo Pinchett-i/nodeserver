@@ -30,8 +30,9 @@ class Model {
       this.table(),
       attributes
     )
-
-    return results.map(x => new this(x))
+    if (results.length > 0) {
+      return results.map(x => new this(x))
+    }
   }
 
   static async create(attributes) {
@@ -140,8 +141,11 @@ class Model {
     let dict = {}
     dict[self_key] = this.id
 
+
     this[function_name] = async function () {
       let join_matches = await join_model.where(dict)
+      if (typeof(join_matches) === 'undefined') { return;}
+
       let target_ids = await Promise.all(join_matches.map(async x => await x[target_key]))
       return target_model.where({ id: target_ids })
     }
